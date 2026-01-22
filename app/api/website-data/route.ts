@@ -7,12 +7,6 @@ const websiteUrlSchema = z.object({
   websiteUrl: z.string().url(),
 });
 
-// const metadata = {
-//   title: document.querySelector("title").textContent,
-//   description: document.querySelector('meta[name="description"]').getAttribute("content"),
-//   ogImage: document.querySelector('meta[property="og:image"]').getAttribute("content"),
-// };
-
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const websiteUrl = searchParams.get("websiteUrl");
