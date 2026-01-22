@@ -14,8 +14,12 @@ export async function GET(request: Request) {
   try {
     const validatedWebsiteUrl = websiteUrlSchema.parse({ websiteUrl });
     const { data } = await axios.get(validatedWebsiteUrl.websiteUrl);
+
+    // Dynamically import JSDOM
+    const { JSDOM } = await import("jsdom");
     const dom = new JSDOM(data);
     const document = dom.window.document;
+
     const metadata = {
       title: document.querySelector("title")?.textContent,
       description: document.querySelector('meta[name="description"]')?.getAttribute("content"),
