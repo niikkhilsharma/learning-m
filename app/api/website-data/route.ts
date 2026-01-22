@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import * as z from "zod";
 import axios, { AxiosError } from "axios";
-import { JSDOM } from "jsdom";
+import * as cheerio from "cheerio";
 
 const websiteUrlSchema = z.object({
   websiteUrl: z.string().url(),
@@ -15,15 +15,14 @@ export async function GET(request: Request) {
     const validatedWebsiteUrl = websiteUrlSchema.parse({ websiteUrl });
     const { data } = await axios.get(validatedWebsiteUrl.websiteUrl);
 
-    // Dynamically import JSDOM
-    const { JSDOM } = await import("jsdom");
-    const dom = new JSDOM(data);
-    const document = dom.window.document;
+    // Load the HTML data with cheerio
+    const $ = cheerio.load(data);
 
+    // Extract metadata using cheerio's jQuery-like syntax
     const metadata = {
-      title: document.querySelector("title")?.textContent,
-      description: document.querySelector('meta[name="description"]')?.getAttribute("content"),
-      ogImage: document.querySelector('meta[property="og:image"]')?.getAttribute("content"),
+      title: $("title").text(),
+      description: $('meta[name="description"]').attr("content"),
+      ogImage: $('meta[property="og:image"]').attr("content"),
     };
 
     return NextResponse.json({ metadata, websiteUrl }, { status: 200 });
