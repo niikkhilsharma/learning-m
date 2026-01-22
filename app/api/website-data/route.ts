@@ -16,6 +16,7 @@ export async function GET(request: Request) {
     const { data } = await axios.get(validatedWebsiteUrl.websiteUrl);
     const dom = new JSDOM(data);
     const document = dom.window.document;
+
     const metadata = {
       title: document.querySelector("title")?.textContent,
       description: document.querySelector('meta[name="description"]')?.getAttribute("content"),
