@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import * as z from "zod";
 import axios, { AxiosError } from "axios";
-import cheerio from "cheerio"; // Import cheerio
+import * as cheerio from "cheerio";
 
 const websiteUrlSchema = z.object({
   websiteUrl: z.string().url(),
