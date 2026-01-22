@@ -40,4 +40,3 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Failed to get website data", details: error }, { status: 500 });
   }
 }
-b;
